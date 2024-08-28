@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Keren</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background: linear-gradient(135deg, #1d2b64, #f8cdda);
+            margin: 0;
+        }
+
+        .calculator {
+            background-color: #2c3e50;
+            border-radius: 20px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+            width: 320px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .clock {
+            color: #ecf0f1;
+            font-size: 28px;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            letter-spacing: 2px;
+            text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+            font-weight: bold;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .display {
+            background-color: #34495e;
+            border-radius: 10px;
+            padding: 20px;
+            font-size: 32px;
+            color: #ecf0f1;
+            text-align: right;
+            box-shadow: inset 0px 5px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            height: 60px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .buttons button {
+            background-color: #3498db;
+            border: none;
+            border-radius: 10px;
+            padding: 20px;
+            font-size: 18px;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        .buttons button:active {
+            transform: scale(0.95);
+        }
+
+        .buttons button.operator {
+            background-color: #e67e22;
+        }
+
+        .buttons button.equals {
+            background-color: #27ae60;
+            grid-column: span 2;
+        }
+
+        .buttons button.clear {
+            background-color: #c0392b;
+            grid-column: span 2;
+        }
+
+        .copyright {
+            font-size: 14px;
+            color: #ecf0f1;
+            text-align: center;
+            margin-top: 10px;
+            background-color: #1d2b64;
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .copyright:hover {
+            transform: scale(1.05);
+            background-color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator">
+    <div class="clock" id="clock">00:00:00</div>
+    <div id="display" class="display">0</div>
+    <div class="buttons">
+        <button onclick="clearDisplay()" class="clear">C</button>
+        <button onclick="deleteDigit()">DEL</button>
+        <button onclick="inputValue('/')">/</button>
+        <button onclick="inputValue('')"></button>
+        <button onclick="inputValue('7')">7</button>
+        <button onclick="inputValue('8')">8</button>
+        <button onclick="inputValue('9')">9</button>
+        <button onclick="inputValue('-')">-</button>
+        <button onclick="inputValue('4')">4</button>
+        <button onclick="inputValue('5')">5</button>
+        <button onclick="inputValue('6')">6</button>
+        <button onclick="inputValue('+')" class="operator">+</button>
+        <button onclick="inputValue('1')">1</button>
+        <button onclick="inputValue('2')">2</button>
+        <button onclick="inputValue('3')">3</button>
+        <button onclick="calculate()" class="equals">=</button>
+        <button onclick="inputValue('0')" class="zero">0</button>
+        <button onclick="inputValue('.')">.</button>
+    </div>
+</div>
+
+<div class="copyright">
+    &copy; 2024 Muhamad Mujahadah Al Farebzi
+</div>
+
+<script>
+    function updateClock() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock(); // initial call to display the clock immediately
+
+    let display = document.getElementById('display');
+    let currentInput = '0';
+
+    function inputValue(value) {
+        if (currentInput === '0') {
+            currentInput = value;
+        } else {
+            currentInput += value;
+        }
+        display.textContent = currentInput;
+    }
+
+    function clearDisplay() {
+        currentInput = '0';
+        display.textContent = currentInput;
+    }
+
+    function deleteDigit() {
+        if (currentInput.length > 1) {
+            currentInput = currentInput.slice(0, -1);
+        } else {
+            currentInput = '0';
+        }
+        display.textContent = currentInput;
+    }
+
+    function calculate() {
+        try {
+            currentInput = eval(currentInput).toString();
+            display.textContent = currentInput;
+        } catch {
+            display.textContent = 'Error';
+            currentInput = '0';
+        }
+    }
+</script>
+
+</body>
+</html>
